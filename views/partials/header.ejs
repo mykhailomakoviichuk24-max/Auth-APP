@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %> · AuthApp</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="/">🔐 AuthApp</a>
+  <nav>
+    <% if (currentUser) { %>
+      <a href="/profile">Профіль</a>
+      <% if (currentUser.role === 'admin') { %>
+        <a href="/admin/users">Користувачі</a>
+        <a href="/admin/logs">Журнал входів</a>
+      <% } %>
+      <form method="post" action="/logout" class="inline">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <button class="link" type="submit">Вийти (<%= currentUser.email %>)</button>
+      </form>
+    <% } else { %>
+      <a href="/login">Вхід</a>
+      <a href="/register">Реєстрація</a>
+    <% } %>
+  </nav>
+</header>
+<main class="container">
+  <% if (flash) { %>
+    <div class="alert <%= flash.type %>"><%= flash.text %></div>
+  <% } %>

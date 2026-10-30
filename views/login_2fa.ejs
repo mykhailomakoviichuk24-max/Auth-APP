@@ -1,0 +1,15 @@
+<%- include('partials/header') %>
+<section class="card narrow">
+  <h1>Код підтвердження</h1>
+  <p class="muted">Введіть 6-значний код із застосунку-автентифікатора (Google Authenticator, Authy тощо).</p>
+  <% if (error) { %><div class="alert error"><%= error %></div><% } %>
+  <form method="post" action="/login/2fa" novalidate>
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <label>Код
+      <input type="text" name="code" inputmode="numeric" pattern="[0-9]*" maxlength="7" autocomplete="one-time-code" required autofocus>
+    </label>
+    <button class="btn" type="submit">Підтвердити</button>
+  </form>
+  <p class="muted small"><a href="/login">Скасувати</a></p>
+</section>
+<%- include('partials/footer') %>

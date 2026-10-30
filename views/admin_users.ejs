@@ -1,0 +1,52 @@
+<%- include('partials/header') %>
+<%
+  const fmt = (ms) => ms ? new Date(ms).toLocaleString('uk-UA') : '—';
+%>
+<section class="card wide">
+  <h1>Користувачі</h1>
+  <form method="get" action="/admin/users" class="row">
+    <input type="search" name="q" value="<%= q %>" placeholder="Пошук за e-mail">
+    <button class="btn secondary" type="submit">Знайти</button>
+  </form>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>ID</th><th>E-mail</th><th>Роль</th><th>Статус</th><th>2FA</th><th>Невдалих входів</th><th>Остання активність</th><th></th></tr>
+    </thead>
+    <tbody>
+    <% users.forEach(function (u) { %>
+      <tr>
+        <td><%= u.id %></td>
+        <td><%= u.email %><% if (u.oidc_sub) { %> <span class="badge">OIDC</span><% } %></td>
+        <td><%= u.role === 'admin' ? 'admin' : 'user' %></td>
+        <td>
+          <% if (u.is_blocked) { %><span class="badge bad">Заблоковано</span>
+          <% } else if (u.locked_until && u.locked_until > now) { %><span class="badge warn">Тимчасово заблоковано до <%= fmt(u.locked_until) %></span>
+          <% } else if (!u.is_active) { %><span class="badge warn">Не активовано</span>
+          <% } else { %><span class="badge ok">Активний</span><% } %>
+        </td>
+        <td><%= u.totp_enabled ? 'так' : 'ні' %></td>
+        <td><%= u.failed_total %></td>
+        <td><%= fmt(u.last_login_at) %></td>
+        <td class="actions">
+          <% if (u.id !== currentUser.id && u.role !== 'admin' && !u.is_blocked) { %>
+            <form method="post" action="/admin/users/<%= u.id %>/block" class="inline">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              <button class="btn small danger" type="submit">Заблокувати</button>
+            </form>
+          <% } %>
+          <% if (u.is_blocked || (u.locked_until && u.locked_until > now)) { %>
+            <form method="post" action="/admin/users/<%= u.id %>/unblock" class="inline">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              <button class="btn small" type="submit">Розблокувати</button>
+            </form>
+          <% } %>
+        </td>
+      </tr>
+    <% }) %>
+    <% if (!users.length) { %><tr><td colspan="8" class="muted">Нічого не знайдено</td></tr><% } %>
+    </tbody>
+  </table>
+  </div>
+</section>
+<%- include('partials/footer') %>

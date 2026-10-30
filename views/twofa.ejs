@@ -1,0 +1,29 @@
+<%- include('partials/header') %>
+<section class="card narrow">
+  <h1>Двофакторна автентифікація</h1>
+  <% if (!enabled) { %>
+    <p>1. Відскануйте QR-код у застосунку-автентифікаторі (Google Authenticator, Authy, 2FAS).</p>
+    <p class="center"><img src="<%= qr %>" alt="QR-код для 2FA" width="220" height="220"></p>
+    <p class="small muted">Або введіть ключ вручну: <code><%= secret %></code></p>
+    <p>2. Введіть 6-значний код, щоб підтвердити налаштування.</p>
+    <form method="post" action="/profile/2fa/enable">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <label>Код
+        <input type="text" name="code" inputmode="numeric" maxlength="7" autocomplete="one-time-code" required>
+      </label>
+      <button class="btn" type="submit">Увімкнути 2FA</button>
+    </form>
+  <% } else { %>
+    <div class="alert success">2FA увімкнено: при вході потрібен код із застосунку.</div>
+    <p>Щоб вимкнути, підтвердіть дію поточним кодом.</p>
+    <form method="post" action="/profile/2fa/disable">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <label>Код
+        <input type="text" name="code" inputmode="numeric" maxlength="7" autocomplete="one-time-code" required>
+      </label>
+      <button class="btn danger" type="submit">Вимкнути 2FA</button>
+    </form>
+  <% } %>
+  <p class="muted small"><a href="/profile">← Назад до профілю</a></p>
+</section>
+<%- include('partials/footer') %>

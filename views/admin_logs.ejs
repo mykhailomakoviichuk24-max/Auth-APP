@@ -1,0 +1,82 @@
+<%- include('partials/header') %>
+<%
+  const fmt = (ms) => ms ? new Date(ms).toLocaleString('uk-UA') : '—';
+  const qs = (p) => '?' + new URLSearchParams({ email: email, status: status, page: p }).toString();
+%>
+<section class="card wide">
+  <h1>Журнал входів</h1>
+
+  <h2>Підсумок за e-mail (хто і скільки разів намагався увійти)</h2>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>E-mail</th><th>Усього спроб</th><th>Невдалих</th><th>Успішних</th><th>Остання спроба</th><th>Остання IP</th></tr></thead>
+    <tbody>
+    <% summary.forEach(function (s) { %>
+      <tr>
+        <td><%= s.email %></td>
+        <td><%= s.attempts %></td>
+        <td><% if (s.failures > 0) { %><span class="badge bad"><%= s.failures %></span><% } else { %>0<% } %></td>
+        <td><%= s.successes %></td>
+        <td><%= fmt(s.last_at) %></td>
+        <td><%= s.last_ip || '—' %></td>
+      </tr>
+    <% }) %>
+    <% if (!summary.length) { %><tr><td colspan="6" class="muted">Записів ще немає</td></tr><% } %>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>Детальний журнал (<%= total %>)</h2>
+  <form method="get" action="/admin/logs" class="row">
+    <input type="search" name="email" value="<%= email %>" placeholder="Фільтр за e-mail">
+    <select name="status">
+      <option value="" <%= status === '' ? 'selected' : '' %>>Усі</option>
+      <option value="ok" <%= status === 'ok' ? 'selected' : '' %>>Успішні</option>
+      <option value="fail" <%= status === 'fail' ? 'selected' : '' %>>Невдалі</option>
+    </select>
+    <button class="btn secondary" type="submit">Фільтрувати</button>
+  </form>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Час</th><th>E-mail</th><th>Метод</th><th>Результат</th><th>Причина</th><th>IP</th><th>User-Agent</th></tr></thead>
+    <tbody>
+    <% rows.forEach(function (r) { %>
+      <tr>
+        <td><%= fmt(r.created_at) %></td>
+        <td><%= r.email %></td>
+        <td><%= r.method %></td>
+        <td><span class="badge <%= r.success ? 'ok' : 'bad' %>"><%= r.success ? 'успіх' : 'невдача' %></span></td>
+        <td><%= r.reason || '—' %></td>
+        <td><%= r.ip || '—' %></td>
+        <td class="ua"><%= r.user_agent || '—' %></td>
+      </tr>
+    <% }) %>
+    <% if (!rows.length) { %><tr><td colspan="7" class="muted">Записів немає</td></tr><% } %>
+    </tbody>
+  </table>
+  </div>
+  <div class="pager">
+    <% if (page > 1) { %><a href="<%= qs(page - 1) %>">← Назад</a><% } %>
+    <span>Сторінка <%= page %> з <%= pages %></span>
+    <% if (page < pages) { %><a href="<%= qs(page + 1) %>">Далі →</a><% } %>
+  </div>
+
+  <h2>Дії адміністраторів</h2>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Час</th><th>Адміністратор</th><th>Дія</th><th>Користувач</th></tr></thead>
+    <tbody>
+    <% actions.forEach(function (a) { %>
+      <tr>
+        <td><%= fmt(a.created_at) %></td>
+        <td><%= a.admin_email || '—' %></td>
+        <td><%= a.action === 'block' ? 'блокування' : 'розблокування' %></td>
+        <td><%= a.target_email || '—' %></td>
+      </tr>
+    <% }) %>
+    <% if (!actions.length) { %><tr><td colspan="4" class="muted">Дій ще не було</td></tr><% } %>
+    </tbody>
+  </table>
+  </div>
+</section>
+<%- include('partials/footer') %>

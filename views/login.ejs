@@ -1,0 +1,27 @@
+<%- include('partials/header') %>
+<section class="card narrow">
+  <h1>Вхід</h1>
+  <% if (error) { %><div class="alert error"><%= error %></div><% } %>
+  <form method="post" action="/login" novalidate>
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <label>E-mail
+      <input type="email" name="email" value="<%= email %>" required autofocus autocomplete="username">
+    </label>
+    <label>Пароль
+      <input type="password" name="password" required autocomplete="current-password">
+    </label>
+    <button class="btn" type="submit">Увійти</button>
+  </form>
+
+  <% if (oidcEnabled) { %>
+    <div class="divider"><span>або</span></div>
+    <a class="btn secondary block" href="/auth/oidc">Увійти через <%= oidcLabel %></a>
+  <% } %>
+
+  <p class="muted small">
+    <a href="/forgot">Забули пароль?</a> ·
+    <a href="/activate/resend">Повторна активація</a> ·
+    <a href="/register">Реєстрація</a>
+  </p>
+</section>
+<%- include('partials/footer') %>

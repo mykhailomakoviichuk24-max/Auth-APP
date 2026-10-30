@@ -1,0 +1,59 @@
+:root {
+  --bg: #f4f6fb; --card: #fff; --text: #1d2433; --muted: #6b7280; --line: #e5e7eb;
+  --primary: #3b5bdb; --primary-d: #2f49b0; --ok: #1f9d55; --warn: #d97706; --bad: #d64545;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); }
+a { color: var(--primary); }
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; padding: 12px 24px; background: var(--card); border-bottom: 1px solid var(--line); }
+.topbar nav { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.brand { font-weight: 700; text-decoration: none; color: var(--text); }
+.container { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,.04); }
+.card.narrow { max-width: 460px; margin: 0 auto; }
+.card.wide { width: 100%; }
+.center { text-align: center; }
+h1 { margin-top: 0; font-size: 1.5rem; }
+h2 { font-size: 1.1rem; margin-top: 28px; }
+label { display: block; margin: 12px 0; font-weight: 500; }
+input, select { display: block; width: 100%; margin-top: 4px; padding: 10px 12px; border: 1px solid #cbd2e0; border-radius: 8px; font: inherit; background: #fff; }
+input:focus, select:focus { outline: 2px solid #b6c4ff; border-color: var(--primary); }
+.btn { display: inline-block; padding: 10px 18px; border: 0; border-radius: 8px; background: var(--primary); color: #fff; font: inherit; font-weight: 600; cursor: pointer; text-decoration: none; }
+.btn:hover { background: var(--primary-d); }
+.btn.secondary { background: #e8ecfb; color: var(--primary); }
+.btn.secondary:hover { background: #dbe2f9; }
+.btn.danger { background: var(--bad); }
+.btn.small { padding: 5px 10px; font-size: .85rem; }
+.btn.block { display: block; text-align: center; }
+button.link { background: none; border: 0; color: var(--primary); cursor: pointer; font: inherit; padding: 0; }
+form.inline { display: inline; }
+.muted { color: var(--muted); } .small { font-size: .85rem; }
+.alert { padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; }
+.alert ul { margin: 0; padding-left: 18px; }
+.alert.error { background: #fdecec; color: #8a1f1f; border: 1px solid #f5c2c2; }
+.alert.success { background: #e8f7ee; color: #14633a; border: 1px solid #b7e4c7; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: .8rem; background: #eef0f4; color: #374151; }
+.badge.ok { background: #e8f7ee; color: #14633a; } .badge.bad { background: #fdecec; color: #8a1f1f; } .badge.warn { background: #fff4e0; color: #8a5200; }
+.divider { display: flex; align-items: center; gap: 12px; color: var(--muted); margin: 18px 0; }
+.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.captcha { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+.captcha img { border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+.meter { height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; margin-top: 6px; }
+.meter > div { height: 100%; width: 0; transition: width .2s, background .2s; }
+.rules { list-style: none; padding: 0; margin: 6px 0 0; }
+.rules li { color: var(--muted); } .rules li::before { content: "○ "; }
+.rules li.ok { color: var(--ok); } .rules li.ok::before { content: "✔ "; }
+dl.props { display: grid; grid-template-columns: 200px 1fr; gap: 10px 16px; }
+dl.props dt { color: var(--muted); } dl.props dd { margin: 0; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { background: #f9fafb; white-space: nowrap; }
+td.ua { max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
+td.actions { white-space: nowrap; }
+.row { display: flex; gap: 8px; align-items: center; margin: 12px 0; } .row input, .row select { margin: 0; max-width: 300px; }
+.pager { display: flex; gap: 16px; align-items: center; justify-content: center; margin-top: 12px; }
+.mail { border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.mail pre { white-space: pre-wrap; word-break: break-word; margin: 0; }
+code { background: #eef0f4; padding: 2px 6px; border-radius: 4px; word-break: break-all; }
+@media (max-width: 600px) { dl.props { grid-template-columns: 1fr; } }

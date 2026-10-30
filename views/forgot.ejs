@@ -1,0 +1,12 @@
+<%- include('partials/header') %>
+<section class="card narrow">
+  <h1>Відновлення пароля</h1>
+  <p class="muted">Вкажіть e-mail — ми надішлемо посилання для створення нового пароля.</p>
+  <form method="post" action="/forgot">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <label>E-mail <input type="email" name="email" required autofocus></label>
+    <button class="btn" type="submit">Надіслати посилання</button>
+  </form>
+  <p class="muted small"><a href="/login">Назад до входу</a></p>
+</section>
+<%- include('partials/footer') %>

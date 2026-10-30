@@ -1,0 +1,11 @@
+<%- include('partials/header') %>
+<section class="card narrow">
+  <h1>Повторна активація</h1>
+  <p class="muted">Вкажіть e-mail — якщо акаунт існує і не активований, ми надішлемо новий лист.</p>
+  <form method="post" action="/activate/resend">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <label>E-mail <input type="email" name="email" required autofocus></label>
+    <button class="btn" type="submit">Надіслати лист</button>
+  </form>
+</section>
+<%- include('partials/footer') %>

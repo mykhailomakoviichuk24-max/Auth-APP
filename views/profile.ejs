@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+<%
+  const fmt = (ms) => ms ? new Date(ms).toLocaleString('uk-UA') : '—';
+  const u = currentUser;
+%>
+<section class="card">
+  <h1>Мій профіль</h1>
+  <dl class="props">
+    <dt>E-mail</dt><dd><%= u.email %></dd>
+    <dt>Роль</dt><dd><span class="badge <%= u.role === 'admin' ? 'warn' : '' %>"><%= u.role === 'admin' ? 'Адміністратор' : 'Користувач' %></span></dd>
+    <dt>Активація</dt>
+    <dd><% if (u.is_active) { %><span class="badge ok">Активовано</span><% } else { %><span class="badge bad">Не активовано</span><% } %></dd>
+    <dt>2FA (TOTP)</dt>
+    <dd>
+      <% if (u.totp_enabled) { %><span class="badge ok">Увімкнено</span><% } else { %><span class="badge">Вимкнено</span><% } %>
+      <a href="/profile/2fa"><%= u.totp_enabled ? 'Керувати' : 'Налаштувати' %></a>
+    </dd>
+    <dt>Вхід через OIDC</dt><dd><%= u.oidc_sub ? 'Підключено' : 'Не підключено' %></dd>
+    <dt>Дата реєстрації</dt><dd><%= fmt(u.created_at) %></dd>
+    <dt>Останній вхід</dt><dd><%= fmt(u.last_login_at) %></dd>
+  </dl>
+</section>
+<%- include('partials/footer') %>

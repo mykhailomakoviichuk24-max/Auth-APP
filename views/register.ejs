@@ -1,0 +1,43 @@
+<%- include('partials/header') %>
+<section class="card narrow">
+  <h1>Реєстрація</h1>
+  <% if (errors.length) { %>
+    <div class="alert error"><ul><% errors.forEach(function (e) { %><li><%= e %></li><% }) %></ul></div>
+  <% } %>
+  <form method="post" action="/register" autocomplete="off" novalidate>
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+    <label>E-mail
+      <input type="email" name="email" value="<%= values.email || '' %>" required autofocus>
+    </label>
+
+    <label>Пароль
+      <input type="password" name="password" id="password" required minlength="8" autocomplete="new-password">
+    </label>
+    <div class="meter"><div id="meter-bar"></div></div>
+    <div id="meter-label" class="muted small">Сила пароля</div>
+    <ul class="rules small" id="rules">
+      <li data-rule="len">щонайменше 8 символів</li>
+      <li data-rule="upper">велика літера</li>
+      <li data-rule="lower">мала літера</li>
+      <li data-rule="digit">цифра</li>
+      <li data-rule="symbol">символ (не літера і не цифра)</li>
+    </ul>
+
+    <label>Підтвердіть пароль
+      <input type="password" name="confirm" required autocomplete="new-password">
+    </label>
+
+    <div class="captcha">
+      <img id="captcha-img" src="/captcha" alt="CAPTCHA" width="160" height="50">
+      <button type="button" class="link" id="captcha-refresh">Оновити</button>
+    </div>
+    <label>Введіть символи із зображення
+      <input type="text" name="captcha" required autocomplete="off" maxlength="10">
+    </label>
+
+    <button class="btn" type="submit">Зареєструватися</button>
+  </form>
+  <p class="muted small">Вже є акаунт? <a href="/login">Увійти</a></p>
+</section>
+<%- include('partials/footer') %>

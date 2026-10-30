@@ -1,0 +1,14 @@
+<%- include('partials/header') %>
+<section class="card">
+  <h1>Dev outbox</h1>
+  <p class="muted">SMTP не налаштований, тому листи не відправляються, а зберігаються тут (лише в режимі розробки).</p>
+  <% mails.forEach(function (m) { %>
+    <article class="mail">
+      <div class="small muted"><%= new Date(m.created_at).toLocaleString('uk-UA') %> → <strong><%= m.to_email %></strong></div>
+      <h3><%= m.subject %></h3>
+      <pre><%= m.body %></pre>
+    </article>
+  <% }) %>
+  <% if (!mails.length) { %><p class="muted">Листів ще немає.</p><% } %>
+</section>
+<%- include('partials/footer') %>
